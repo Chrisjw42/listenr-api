@@ -2,7 +2,6 @@
 FROM continuumio/miniconda3
 
 # Clean conda env
-RUN conda remove -y --all
 RUN conda create -n env python=3.6.7
 
 # Ensure the environment is activated every time the VM starts
