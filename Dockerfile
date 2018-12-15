@@ -22,9 +22,8 @@ RUN conda install -y --file requirements-mini.txt
 # Make port 80 available to the world outside this container
 EXPOSE 80
 
-# Define environment variable
+# Define environment variables
 ENV NAME World
-
 ENV FLASK_APP "api.py"
 
 CMD ["flask", "run", "--host=0.0.0.0"]
