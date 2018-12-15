@@ -1,7 +1,8 @@
 # Pull the miniconda container to allow conda usage
 FROM continuumio/miniconda3
 
-RUN conda create -n env python=3.6,7
+RUN conda uninstall -y --all
+RUN conda create -n env python=3.6.7
 
 # Ensure the environment is activated every time the VM starts
 RUN echo "source activate env" > ~/.bashrc
