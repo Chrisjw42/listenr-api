@@ -1,5 +1,5 @@
 flask
+requests
 pandas
+json
 numpy
-keras
-tensorflow
