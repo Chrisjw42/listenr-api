@@ -19,8 +19,8 @@ COPY . /app
 # Install any needed packages specified in requirements.txt
 RUN conda install -y --file requirements-mini.txt 
 
-# Make port 80 available to the world outside this container
-EXPOSE 80
+# Make port available to the world outside this container
+EXPOSE 5000
 
 # Define environment variables
 ENV NAME World
