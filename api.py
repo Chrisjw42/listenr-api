@@ -185,4 +185,4 @@ def ApiRoot(): # Links the rule to this function
 #         return "NO MATCHES. " + results
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5107)
+    app.run()
