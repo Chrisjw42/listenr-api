@@ -17,7 +17,7 @@ COPY . /app
 RUN conda install -y --file requirements-mini.txt 
 
 # Make port available to the world outside this container
-EXPOSE 5000 
+EXPOSE 5107 
 
 # Define environment variables
 ENV FLASK_APP "api.py"
