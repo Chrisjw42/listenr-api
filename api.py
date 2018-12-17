@@ -160,9 +160,6 @@ def ApiRoot(): # Links the rule to this function
     
 #     return "Please enter a search query!"
 
-# if __name__ == "__main__":
-#     app.run()
-
 # """
 # Take a saved image filename and pass it to the bash script
 # """
@@ -186,3 +183,6 @@ def ApiRoot(): # Links the rule to this function
 #         return str(results.split("\n")[1:])
 #     else:
 #         return "NO MATCHES. " + results
+
+if __name__ == "__main__":
+    app.run()
