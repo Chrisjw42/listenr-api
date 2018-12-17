@@ -22,4 +22,4 @@ EXPOSE 5000
 # Define environment variables
 ENV FLASK_APP "api.py"
 # Listen to all public IPs
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["flask", "run", "--host=0.0.0.0:5000"]
