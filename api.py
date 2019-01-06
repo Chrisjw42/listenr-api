@@ -82,7 +82,9 @@ def RequiresAuth(f):
 
 @app.route("/", methods=["GET", "POST"]) # Adds the "/" rule
 def ApiRoot(): # Links the rule to this function
-    return jsonify({"message": "You bloody gronk.\n"}) # This is what the funciton does
+    
+    return "hello"
+    # return jsonify({"message": "You bloody gronk.\n"}) # This is what the funciton does
 
 # @app.route("/test", methods = ["GET"]) # Adds the rule
 # @RequiresAuth
