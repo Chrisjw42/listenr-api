@@ -8,82 +8,36 @@ import time
 from datetime import timedelta
 from functools import update_wrapper, wraps
 
-from flask import make_response, request, current_app, Flask, url_for, jsonify, Response
+from flask import make_response, request, current_app, Flask, url_for, jsonify, Response, g
 import tokens
-from flask import jsonify
+from flask_httpauth import HTTPBasicAuth
+import user
+
+basic_auth = HTTPBasicAuth()
 
 app = Flask(__name__)
 
-def crossdomain(origin=None, methods=None, headers=None,
-                max_age=21600, attach_to_all=True,
-                automatic_options=True):
-    if methods is not None:
-        methods = ', '.join(sorted(x.upper() for x in methods))
-    if headers is not None and not isinstance(headers, (str, bytes)):
-        headers = ', '.join(x.upper() for x in headers)
-    if not isinstance(origin, (str, bytes)):
-        origin = ', '.join(origin)
-    if isinstance(max_age, timedelta):
-        max_age = max_age.total_seconds()
+# Eventually store a user class object here
+current_user = None
 
-    def get_methods():
-        if methods is not None:
-            return methods
-
-        options_resp = current_app.make_default_options_response()
-        return options_resp.headers['allow']
-
-    def decorator(f):
-        def wrapped_function(*args, **kwargs):
-            if automatic_options and request.method == 'OPTIONS':
-                resp = current_app.make_default_options_response()
-            else:
-                resp = make_response(f(*args, **kwargs))
-            if not attach_to_all and request.method != 'OPTIONS':
-                return resp
-
-            h = resp.headers
-
-            h['Access-Control-Allow-Origin'] = origin
-            h['Access-Control-Allow-Methods'] = get_methods()
-            h['Access-Control-Max-Age'] = str(max_age)
-            if headers is not None:
-                h['Access-Control-Allow-Headers'] = headers
-            return resp
-
-        f.provide_automatic_options = False
-        return update_wrapper(wrapped_function, f)
-    return decorator
-
+@basic_auth.verify_password
 def CheckAuth(username, password):
-    return (username == "listenr" and password=="test")
+    return (username == "listenr" and password=="46kKasgFsw520kzSVYtXwRQP5U1KkOJ8")
 
-def Authenticate():
-    message = {"message":"Please provide authentication information, a username and password"}
-    response = jsonify(message)
-
-    response.status_code = 401
-    response.headers['WWW-Authenticate'] = 'Basic realm="Login Required"'
-
-    return response
-
-def RequiresAuth(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        auth = request.authorization
-        print(auth)
-        print(request)
-        if not auth or not CheckAuth(auth.username, auth.password):
-            return Authenticate()
-        return f(*args, **kwargs)
-
-    return decorated
-
+@basic_auth.error_handler
+def basic_auth_error():
+    return jsonify({"message":"401 Error! Please provide credentials."})
 
 @app.route("/", methods=["GET", "POST"]) # Adds the "/" rule
 def ApiRoot(): # Links the rule to this function
-    
     return jsonify({"message": "You bloody gronk.\n"}) # This is what the funciton does
+
+@app.route('/get_token', methods=['POST'])
+@basic_auth.login_required
+def get_token():
+    current_user = user.User()
+    token = current_user.get_token()
+    return jsonify({'token': token})
 
 # @app.route("/test", methods = ["GET"]) # Adds the rule
 # @RequiresAuth
@@ -186,6 +140,73 @@ def ApiRoot(): # Links the rule to this function
 #     else:
 #         return "NO MATCHES. " + results
 
+
 if __name__ == "__main__":
     #app.run()
     print()
+    
+
+# def crossdomain(origin=None, methods=None, headers=None,
+#                 max_age=21600, attach_to_all=True,
+#                 automatic_options=True):
+#     if methods is not None:
+#         methods = ', '.join(sorted(x.upper() for x in methods))
+#     if headers is not None and not isinstance(headers, (str, bytes)):
+#         headers = ', '.join(x.upper() for x in headers)
+#     if not isinstance(origin, (str, bytes)):
+#         origin = ', '.join(origin)
+#     if isinstance(max_age, timedelta):
+#         max_age = max_age.total_seconds()
+
+#     def get_methods():
+#         if methods is not None:
+#             return methods
+
+#         options_resp = current_app.make_default_options_response()
+#         return options_resp.headers['allow']
+
+#     def decorator(f):
+#         def wrapped_function(*args, **kwargs):
+#             if automatic_options and request.method == 'OPTIONS':
+#                 resp = current_app.make_default_options_response()
+#             else:
+#                 resp = make_response(f(*args, **kwargs))
+#             if not attach_to_all and request.method != 'OPTIONS':
+#                 return resp
+
+#             h = resp.headers
+
+#             h['Access-Control-Allow-Origin'] = origin
+#             h['Access-Control-Allow-Methods'] = get_methods()
+#             h['Access-Control-Max-Age'] = str(max_age)
+#             if headers is not None:
+#                 h['Access-Control-Allow-Headers'] = headers
+#             return resp
+
+#         f.provide_automatic_options = False
+#         return update_wrapper(wrapped_function, f)
+#     return decorator
+
+# def CheckAuth(username, password):
+#     return (username == "listenr" and password=="test")
+
+# def Authenticate():
+#     message = {"message":"Please provide authentication information, a username and password"}
+#     response = jsonify(message)
+
+#     response.status_code = 401
+#     response.headers['WWW-Authenticate'] = 'Basic realm="Login Required"'
+
+#     return response
+
+# def RequiresAuth(f):
+#     @wraps(f)
+#     def decorated(*args, **kwargs):
+#         auth = request.authorization
+#         print(auth)
+#         print(request)
+#         if not auth or not CheckAuth(auth.username, auth.password):
+#             return Authenticate()
+#         return f(*args, **kwargs)
+
+#     return decorated
