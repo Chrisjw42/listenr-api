@@ -18,10 +18,12 @@ basic_auth = HTTPBasicAuth()
 app = Flask(__name__)
 
 # Eventually store a user class object here
-current_user = None
+current_user = user.User()
 
 @basic_auth.verify_password
 def CheckAuth(username, password):
+
+    # This is very basic, and only allows for one user (the demo)
     return (username == "listenr" and password=="46kKasgFsw520kzSVYtXwRQP5U1KkOJ8")
 
 @basic_auth.error_handler
@@ -33,9 +35,9 @@ def ApiRoot(): # Links the rule to this function
     return jsonify({"message": "You bloody gronk.\n"}) # This is what the funciton does
 
 @app.route('/get_token', methods=['POST'])
-@basic_auth.login_required
+@basic_auth.login_required # Only run this function if the credentials were provided
 def get_token():
-    current_user = user.User()
+    # current_user = user.User()
     token = current_user.get_token()
     return jsonify({'token': token})
 
