@@ -1,1 +1,4 @@
 Flask
+flask-restful # To create api endpoints
+flask-jwt-extended # To generate and check JWT
+passlib # To generate secure pwd and hashes

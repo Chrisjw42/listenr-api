@@ -9,6 +9,8 @@ from datetime import timedelta
 from functools import update_wrapper, wraps
 
 from flask import make_response, request, current_app, Flask, url_for, jsonify, Response
+import tokens
+from flask import jsonify
 
 app = Flask(__name__)
 
@@ -80,8 +82,7 @@ def RequiresAuth(f):
 
 @app.route("/", methods=["GET", "POST"]) # Adds the "/" rule
 def ApiRoot(): # Links the rule to this function
-    return "You bloody gronk.\n" # This is what the funciton does
-
+    return jsonify({"message": "You bloody gronk.\n"}) # This is what the funciton does
 
 # @app.route("/test", methods = ["GET"]) # Adds the rule
 # @RequiresAuth
@@ -185,4 +186,5 @@ def ApiRoot(): # Links the rule to this function
 #         return "NO MATCHES. " + results
 
 if __name__ == "__main__":
-    app.run()
+    #app.run()
+    print()
