@@ -14,7 +14,7 @@ WORKDIR /app
 COPY . /app
 
 # Install any needed packages specified in requirements.txt
-RUN pip install -y --file requirements-mini.txt 
+RUN pip install --file requirements-mini.txt 
 
 # Make port available to the world outside this container
 EXPOSE 5107 
