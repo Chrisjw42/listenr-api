@@ -4,11 +4,6 @@ import os
 
 active_users = []
 
-def is_token_valid(token):
-    for i in active_users:
-        if i.token == token:
-            return True
-    return False
 
 class User():
     id = ""

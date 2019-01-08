@@ -10,11 +10,12 @@ from functools import update_wrapper, wraps
 
 from flask import make_response, request, current_app, Flask, url_for, jsonify, Response, g
 import tokens
-from flask_httpauth import HTTPBasicAuth
+from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
 import users
 import analysis
 
 basic_auth = HTTPBasicAuth()
+token_auth = HTTPTokenAuth()
 
 app = Flask(__name__)
 
@@ -24,9 +25,22 @@ def CheckAuth(username, password):
     # This is very basic, and only allows for one user (the demo)
     return (username == "listenr" and password=="46kKasgFsw520kzSVYtXwRQP5U1KkOJ8")
 
+@token_auth.verify_token
+def is_token_valid(token):
+    for i in users.active_users:
+        if i.token == token:
+            return True
+    return False
+
 @basic_auth.error_handler
 def basic_auth_error():
-    return jsonify({"message":"401 Error! Please provide credentials."})
+    return jsonify({"message":"401 Error! Please provide basic auth."})
+
+@token_auth.error_handler
+def token_auth_error():
+    return jsonify({"message":"401 Error! Please provide token."})
+
+### API ROUTES ###
 
 @app.route("/", methods=["GET", "POST"]) # Adds the "/" rule
 def ApiRoot(): # Links the rule to this function
@@ -47,7 +61,7 @@ def get_token():
     return jsonify({'token': token})
 
 @app.route('/analyse/<int:token>', methods=['GET'])
-@basic_auth.login_required
+@token_auth.login_required
 def analyse_sample(token):
 
     if not users.is_token_valid(token):
@@ -55,6 +69,9 @@ def analyse_sample(token):
 
     result = analysis.analyse_sample("test")
     return result
+
+
+
 
 # @app.route("/test", methods = ["GET"]) # Adds the rule
 # @RequiresAuth
