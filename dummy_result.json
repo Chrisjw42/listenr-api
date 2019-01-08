@@ -1,0 +1,9 @@
+{
+    "id":"abc123",
+    "anger" : 0.09,
+    "disgust" : 0.01,
+    "fear" : 0.0,
+    "happy" : 0.7,
+    "neutral" : 0.1,
+    "sad" : 0.1
+}

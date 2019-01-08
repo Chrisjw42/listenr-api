@@ -12,6 +12,7 @@ from flask import make_response, request, current_app, Flask, url_for, jsonify, 
 import tokens
 from flask_httpauth import HTTPBasicAuth
 import user
+import analysis
 
 basic_auth = HTTPBasicAuth()
 
@@ -40,6 +41,15 @@ def get_token():
     # current_user = user.User()
     token = current_user.get_token()
     return jsonify({'token': token})
+
+#@app.route('/analyse/<int:id>', methods=['GET'])
+
+@app.route('/analyse', methods=['GET'])
+@basic_auth.login_required
+def analyse_sample(id):
+
+    result = analysis.analyse_sample("test")
+    return result
 
 # @app.route("/test", methods = ["GET"]) # Adds the rule
 # @RequiresAuth
