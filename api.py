@@ -63,7 +63,7 @@ def get_token():
 #@app.route('/analyse/<int:token>', methods=['GET'])
 @app.route('/analyse', methods=['GET'])
 @token_auth.login_required
-def analyse_sample(token):
+def analyse_sample():
 
     result = analysis.analyse_sample("test")
     return result
