@@ -35,7 +35,7 @@ def basic_auth_error():
 def ApiRoot(): # Links the rule to this function
     return jsonify({"message": "You bloody gronk.\n"}) # This is what the funciton does
 
-@app.route('/get_token', methods=['POST'])
+@app.route('/get_token', methods=['GET'])
 @basic_auth.login_required # Only run this function if the credentials were provided
 def get_token():
     # current_user = user.User()
