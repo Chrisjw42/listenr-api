@@ -60,12 +60,10 @@ def get_token():
 
     return jsonify({'token': token})
 
-@app.route('/analyse/<int:token>', methods=['GET'])
+#@app.route('/analyse/<int:token>', methods=['GET'])
+@app.route('/analyse', methods=['GET'])
 @token_auth.login_required
 def analyse_sample(token):
-
-    if not users.is_token_valid(token):
-        return "Get outta here! (please provide a token)"
 
     result = analysis.analyse_sample("test")
     return result
