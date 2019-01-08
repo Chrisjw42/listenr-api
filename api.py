@@ -46,7 +46,7 @@ def get_token():
 
 @app.route('/analyse', methods=['GET'])
 @basic_auth.login_required
-def analyse_sample(id):
+def analyse_sample():
 
     result = analysis.analyse_sample("test")
     return result
