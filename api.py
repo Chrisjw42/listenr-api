@@ -11,15 +11,12 @@ from functools import update_wrapper, wraps
 from flask import make_response, request, current_app, Flask, url_for, jsonify, Response, g
 import tokens
 from flask_httpauth import HTTPBasicAuth
-import user
+import users
 import analysis
 
 basic_auth = HTTPBasicAuth()
 
 app = Flask(__name__)
-
-# Eventually store a user class object here
-current_user = user.User()
 
 @basic_auth.verify_password
 def CheckAuth(username, password):
@@ -38,15 +35,23 @@ def ApiRoot(): # Links the rule to this function
 @app.route('/get_token', methods=['GET'])
 @basic_auth.login_required # Only run this function if the credentials were provided
 def get_token():
-    # current_user = user.User()
-    token = current_user.get_token()
+    """
+    FIXME: This might as well be "create temporary new user"
+    """
+
+    # create a new user, 
+    new_user = users.User()
+    token = new_user.get_token()
+    users.active_users.append(new_user)
+
     return jsonify({'token': token})
 
-#@app.route('/analyse/<int:id>', methods=['GET'])
-
-@app.route('/analyse', methods=['GET'])
+@app.route('/analyse/<int:token>', methods=['GET'])
 @basic_auth.login_required
-def analyse_sample():
+def analyse_sample(token):
+
+    if not users.is_token_valid(token):
+        return "Get outta here! (please provide a token)"
 
     result = analysis.analyse_sample("test")
     return result
