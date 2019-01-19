@@ -13,6 +13,7 @@ import tokens
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
 import users
 import analysis
+import session_gen as sg
 
 basic_auth = HTTPBasicAuth()
 token_auth = HTTPTokenAuth()
@@ -46,11 +47,11 @@ def token_auth_error():
 def ApiRoot(): # Links the rule to this function
     return jsonify({"message": "You bloody gronk.\n"}) # This is what the funciton does
 
-@app.route('/get_token', methods=['GET'])
+@app.route('/account', methods=['POST'])
 @basic_auth.login_required # Only run this function if the credentials were provided
 def get_token():
     """
-    FIXME: This might as well be "create temporary new user"
+    FIXME: This might as well be "create temporary new user", since a new user is created every time.
     """
 
     # create a new user, 
@@ -58,7 +59,51 @@ def get_token():
     token = new_user.get_token()
     users.active_users.append(new_user)
 
-    return jsonify({'token': token})
+    return jsonify({'authentication_token': token})
+
+@app.route('/account/reset_password', methods=['POST'])
+@basic_auth.login_required 
+def reset_password():
+
+    return jsonify({}), 202
+
+@app.route('/account/password', methods=['PATCH'])
+@basic_auth.login_required 
+def password():
+
+    return jsonify({}), 204
+
+@app.route('/account/login', methods=['POST'])
+@basic_auth.login_required 
+def login():
+
+    # create a new user, 
+    new_user = users.User()
+    token = new_user.get_token()
+    users.active_users.append(new_user)
+
+    return jsonify({'authentication_token': token}), 201
+
+@app.route('/account/logout', methods=['DELETE'])
+@basic_auth.login_required 
+def logout():
+
+    return jsonify({}), 
+
+@app.route('/account/profile', methods=['GET'])
+@basic_auth.login_required 
+def profile():
+
+    return jsonify({"first_name":"Chris",
+                    "last_name":"Williams",
+                    "email":"wilbur@deakin.edu.au"}), 200    
+
+@app.route('/account/sessions', methods=['GET'])
+@basic_auth.login_required 
+def sessions():
+
+    return jsonify(sg.get_random_session()), 200 
+
 
 #@app.route('/analyse/<int:token>', methods=['GET'])
 @app.route('/analyse', methods=['GET'])
@@ -67,7 +112,6 @@ def analyse_sample():
 
     result = analysis.analyse_sample("test")
     return result
-
 
 
 
