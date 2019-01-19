@@ -47,7 +47,6 @@ def token_auth_error():
 def ApiRoot(): # Links the rule to this function
     return jsonify({"message": "You bloody gronk.\n"}) # This is what the funciton does
 
-# k
 @app.route('/account', methods=['POST'])
 @basic_auth.login_required # Only run this function if the credentials were provided
 def get_token():
@@ -62,21 +61,18 @@ def get_token():
 
     return jsonify({'authentication_token': token})
 
-# k
 @app.route('/account/reset_password', methods=['POST'])
 @basic_auth.login_required 
 def reset_password():
 
     return jsonify({}), 202
 
-# k
 @app.route('/account/password', methods=['PATCH'])
 @basic_auth.login_required 
 def password():
 
     return jsonify({}), 204
 
-# k
 @app.route('/account/login', methods=['POST'])
 @basic_auth.login_required 
 def login():
@@ -88,14 +84,12 @@ def login():
 
     return jsonify({'authentication_token': token}), 201
 
-# no -
 @app.route('/account/logout', methods=['DELETE'])
 @basic_auth.login_required 
 def logout():
 
     return jsonify({})
 
-# k
 @app.route('/account/profile', methods=['GET'])
 @basic_auth.login_required 
 def profile():
@@ -104,14 +98,12 @@ def profile():
                     "last_name":"Williams",
                     "email":"wilbur@deakin.edu.au"}), 200    
 
-# k
 @app.route('/account/sessions', methods=['GET'])
 @basic_auth.login_required 
 def sessions():
 
     return jsonify(sg.get_random_session()), 200 
 
- 
 #@app.route('/analyse/<int:token>', methods=['GET'])
 @app.route('/analyse', methods=['GET'])
 @token_auth.login_required
