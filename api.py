@@ -104,7 +104,7 @@ def sessions():
 
     return jsonify(sg.get_random_session()), 200 
 
-
+ 
 #@app.route('/analyse/<int:token>', methods=['GET'])
 @app.route('/analyse', methods=['GET'])
 @token_auth.login_required
