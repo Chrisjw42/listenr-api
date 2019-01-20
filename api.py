@@ -97,6 +97,17 @@ def sessions():
 
     return jsonify(sg.get_random_session()), 200 
 
+@app.route('/account/sessions/0/audio', methods=['POST'])
+def sessions_eg():
+
+    return jsonify({
+                    "id": 0,
+                    "name": "Product Testing - Project 1",
+                    "notes": "Performed a testing session with users for project 1.",
+                    "analysed_on": "UTC ISO6401 Date"
+                    }), 202
+
+
 @app.route('/account/sessions', methods=['POST'])
 def sessions_p():
 
@@ -111,6 +122,7 @@ def analyse_sample():
 
     result = analysis.analyse_sample("test")
     return result
+
 
 
 
