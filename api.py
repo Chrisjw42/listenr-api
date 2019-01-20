@@ -92,10 +92,18 @@ def profile():
                     "last_name":"Williams",
                     "email":"wilbur@deakin.edu.au"}), 200    
 
-@app.route('/account/sessions', methods=['GET']) 
+@app.route('/account/sessions', methods=['GET'])
 def sessions():
 
     return jsonify(sg.get_random_session()), 200 
+
+@app.route('/account/sessions', methods=['POST'])
+def sessions_p():
+
+    return jsonify({"id": 0,
+                    "name": "Product Testing - Project 1",
+                    "notes": "Performed a testing session with users for project 1.",
+                    "analysed_on": "UTC ISO6401 Date"}), 201
 
 #@app.route('/analyse/<int:token>', methods=['GET'])
 @app.route('/analyse', methods=['GET'])
