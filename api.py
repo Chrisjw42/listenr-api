@@ -66,7 +66,6 @@ def reset_password():
     return jsonify({}), 202
 
 @app.route('/account/password', methods=['PATCH'])
-@basic_auth.login_required 
 def password():
 
     return jsonify({}), 204
@@ -82,28 +81,24 @@ def login():
     return jsonify({'authentication_token': token}), 201
 
 @app.route('/account/logout', methods=['DELETE'])
-@basic_auth.login_required 
 def logout():
 
     return jsonify({})
 
 @app.route('/account/profile', methods=['GET'])
-@basic_auth.login_required 
 def profile():
 
     return jsonify({"first_name":"Chris",
                     "last_name":"Williams",
                     "email":"wilbur@deakin.edu.au"}), 200    
 
-@app.route('/account/sessions', methods=['GET'])
-@basic_auth.login_required 
+@app.route('/account/sessions', methods=['GET']) 
 def sessions():
 
     return jsonify(sg.get_random_session()), 200 
 
 #@app.route('/analyse/<int:token>', methods=['GET'])
 @app.route('/analyse', methods=['GET'])
-@token_auth.login_required
 def analyse_sample():
 
     result = analysis.analyse_sample("test")
