@@ -48,7 +48,6 @@ def ApiRoot(): # Links the rule to this function
     return jsonify({"message": "You bloody gronk.\n"}) # This is what the funciton does
 
 @app.route('/account', methods=['POST'])
-@basic_auth.login_required # Only run this function if the credentials were provided
 def get_token():
     """
     FIXME: This might as well be "create temporary new user", since a new user is created every time.
@@ -62,7 +61,6 @@ def get_token():
     return jsonify({'authentication_token': token})
 
 @app.route('/account/reset_password', methods=['POST'])
-@basic_auth.login_required 
 def reset_password():
 
     return jsonify({}), 202
@@ -74,7 +72,6 @@ def password():
     return jsonify({}), 204
 
 @app.route('/account/login', methods=['POST'])
-@basic_auth.login_required 
 def login():
 
     # create a new user, 
