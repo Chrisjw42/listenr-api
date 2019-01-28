@@ -75,4 +75,4 @@ def get_random_session():
   ]
 }
 
-    return responses
+    return response
